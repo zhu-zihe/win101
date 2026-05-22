@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Windows 1.0</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #screen {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="screen"></div>
+    <script src="libv86.js"></script>
+    <script>
+        var emulator = new V86({
+            screen_container: document.getElementById("screen"),
+            bios: { url: "seabios.bin" },
+            vga_bios: { url: "vgabios.bin" },
+            fda: { url: "windows101.img" },
+            autostart: true
+        });
+
+        document.getElementById("screen").onclick = function() {
+            emulator.mouse_set_enabled(true);
+            this.requestPointerLock();
+        };
+
+        document.onpointerlockchange = function() {
+            emulator.mouse_set_enabled(!!document.pointerLockElement);
+        };
+    </script>
+</body>
+</html>
